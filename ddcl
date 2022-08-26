@@ -1,13 +1,14 @@
 #/bin/sh
 
-if [ -f docker-compose.local.yml ]; then
-  docker-compose -f docker-compose.yml -f docker-compose.local.yml config > docker-compose.merged.yml
-fi
-if [ -f docker-compose.merged.yml ]; then
-  docker-compose -f docker-compose.merged.yml $@
-else
-  if [ -f docker-compose.osx.yml ]; then
+if [ -f docker-compose.osx.yml ]; then
+  if [ -f docker-compose.local.yml ]; then
+    docker-compose -f docker-compose.osx.yml -f docker-compose.local.yml $@
+  else
     docker-compose -f docker-compose.osx.yml $@
+  fi
+else
+  if [ -f docker-compose.local.yml ]; then
+    docker-compose -f docker-compose.yml -f docker-compose.local.yml $@
   else
     docker-compose $@
   fi
